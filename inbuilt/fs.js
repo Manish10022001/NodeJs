@@ -1,3 +1,7 @@
+// wherever u are trying to deal with file system .
+// it is used in logs, wher we ever download ticket fs is used, they write that in file and then download it for you. fs is used  indirectly.
+//  any where content that is available to u , u r writing that in a file so u that u are use it later on tat i achieved through fs
+
 let fs = require("fs");
 fs.writeFile("myCode.txt", "this is my data of node", (err) => {
   if (err) throw err;
@@ -14,3 +18,9 @@ fs.writeFile("myCode.txt", "this is my data of node", (err) => {
 // })
 
 //drawback of writeFile: it overwrite the file, so to overcome we use appendFile
+
+//Apend
+fs.appendFile('myText.txt','Code from Node FS \n',(err)=>{
+    if(err) throw err;
+    console.log("File Appended")//add multiple files without overwitingg.
+})
