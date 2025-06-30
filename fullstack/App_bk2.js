@@ -1,12 +1,31 @@
-//when we have multiple router under one title, then we use express router
 let express = require('express');
 let app = express();
 let dotenv = require('dotenv');
 dotenv.config();
 let port = process.env.PORT || 6700;
 
-let categoryRouter = require('./src/controller/categoryRouter')
-let productRouter = require('./src/controller/productsRouter')
+const category=[
+    {
+        "id":1,
+        "category": "Fashion",
+        "thumb":"https://i.ibb.co/56VP0Fn/cloths.jpg"
+    },
+    {
+        "id":2,
+        "category":"Electronics",
+        "thumb":"https://i.ibb.co/pw5Wtdx/appliances.jpg"
+    },
+    {
+        "id":3,
+        "category":"Essentials",
+        "thumb":"https://i.ibb.co/0cw34xm/essentials.jpg"
+    },
+    {
+        "id":4,
+        "category": "Footwear",
+        "thumb":"https://i.ibb.co/r3SZq8S/footware.jpg"
+    }
+]
 
 const products = [
     {
@@ -520,16 +539,29 @@ const products = [
         "Color": "Black",
         "company": "Bajaj"
     }
-] 
+]
 
 app.get('/',(req,res)=>{
     res.send("Hi from Express")
 })
 
-//now how to use these routers for that we use use method
-app.use('/category',categoryRouter); //(path, router we created)
-app.use('/products',productRouter);
+app.get('/category',(req,res)=>{
+    res.send(category);
+})
+//we are calling two paths of same name details but it will only execute the one which 
+//is written first. 
+//multiple route under one router the the first one execute
+app.get('/details',(req,res)=>{
+    res.send("Categogy Details")
+})
 
+app.get('/products',(req,res)=>{
+    res.send(products)
+})
+
+app.get('/details',(req,res)=>{
+    res.send("Products Details")
+})
 app.listen(port,(err)=>{
     if(err) throw err;
     else{

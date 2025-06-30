@@ -5,8 +5,31 @@ let dotenv = require('dotenv');
 dotenv.config();
 let port = process.env.PORT || 6700;
 
-let categoryRouter = require('./src/controller/categoryRouter')
-let productRouter = require('./src/controller/productsRouter')
+let categoryRouter = express.Router(); //create router
+let productRouter = express.Router();
+
+const category=[
+    {
+        "id":1,
+        "category": "Fashion",
+        "thumb":"https://i.ibb.co/56VP0Fn/cloths.jpg"
+    },
+    {
+        "id":2,
+        "category":"Electronics",
+        "thumb":"https://i.ibb.co/pw5Wtdx/appliances.jpg"
+    },
+    {
+        "id":3,
+        "category":"Essentials",
+        "thumb":"https://i.ibb.co/0cw34xm/essentials.jpg"
+    },
+    {
+        "id":4,
+        "category": "Footwear",
+        "thumb":"https://i.ibb.co/r3SZq8S/footware.jpg"
+    }
+]
 
 const products = [
     {
@@ -520,11 +543,29 @@ const products = [
         "Color": "Black",
         "company": "Bajaj"
     }
-] 
+]
 
 app.get('/',(req,res)=>{
     res.send("Hi from Express")
 })
+
+categoryRouter.route('/').
+    get((req,res)=>{
+        res.send(category)
+    })
+categoryRouter.route('/details').
+    get((req,res)=>{
+        res.send("Category Details")
+    })
+
+productRouter.route('/').
+    get((req,res)=>{
+        res.send(products)
+    }) 
+productRouter.route('/details').
+    get((req,res)=>{
+        res.send("Product Details")
+    })
 
 //now how to use these routers for that we use use method
 app.use('/category',categoryRouter); //(path, router we created)

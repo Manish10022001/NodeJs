@@ -1,12 +1,5 @@
-//when we have multiple router under one title, then we use express router
 let express = require('express');
-let app = express();
-let dotenv = require('dotenv');
-dotenv.config();
-let port = process.env.PORT || 6700;
-
-let categoryRouter = require('./src/controller/categoryRouter')
-let productRouter = require('./src/controller/productsRouter')
+let productRouter = express.Router();
 
 const products = [
     {
@@ -520,19 +513,14 @@ const products = [
         "Color": "Black",
         "company": "Bajaj"
     }
-] 
+]
+productRouter.route('/').
+    get((req,res)=>{
+        res.send(products)
+    }) 
+productRouter.route('/details').
+    get((req,res)=>{
+        res.send("Product Details")
+    })
 
-app.get('/',(req,res)=>{
-    res.send("Hi from Express")
-})
-
-//now how to use these routers for that we use use method
-app.use('/category',categoryRouter); //(path, router we created)
-app.use('/products',productRouter);
-
-app.listen(port,(err)=>{
-    if(err) throw err;
-    else{
-        console.log(`The server is running on ${port}`)
-    }
-})
+module.exports = productRouter;
