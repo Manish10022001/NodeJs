@@ -1,0 +1,6 @@
+::1 - - [02/Jul/2025:14:47:22 +0000] "GET / HTTP/1.1" 200 1710
+::1 - - [02/Jul/2025:14:47:22 +0000] "GET /normalize.css HTTP/1.1" 304 -
+::1 - - [02/Jul/2025:14:47:22 +0000] "GET /styles.css HTTP/1.1" 304 -
+::1 - - [02/Jul/2025:14:47:22 +0000] "GET /script.js HTTP/1.1" 304 -
+::1 - - [02/Jul/2025:14:47:22 +0000] "GET /img/cutlery.jpg HTTP/1.1" 304 -
+::1 - - [02/Jul/2025:14:47:22 +0000] "GET /img/paper-pattern.jpg HTTP/1.1" 304 -
