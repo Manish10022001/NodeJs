@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node App.js",
-    "dev" : "nodemon App.js"
+    "dev": "nodemon App.js"
   },
   "keywords": [
     "node"
@@ -13,7 +13,7 @@
   "author": "developer manish",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^17.0.0",
+    "dotenv": "^17.0.1",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "mongodb": "^4.12.0",
