@@ -28,7 +28,7 @@ function router(menu) {
     });
     //res.render("products", { title: "Products Page", data: products, menu }); //this is the same `menu` from App.js
   });
-
+~
   productRouter.route("/details").get((req, res) => {
     res.send("Product Details");
   });
