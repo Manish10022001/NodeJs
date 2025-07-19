@@ -22,7 +22,7 @@ function router(menu) {
                         if(err){
                             res.status(203).send("Error while fetching");
                         } else{
-                            res.render('category', {title:'Category Page', category, menu});
+                            res.render('category', {title:'Category Page', category:result, menu});
                         }
                     })
                 }
