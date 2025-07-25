@@ -1,15 +1,22 @@
 {
-  "name": "nodejs",
+  "name": "fullstackapp",
   "version": "1.0.0",
-  "description": "this is node js package",
+  "description": "This is node with ejs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node App.js",
+    "dev": "nodemon App.js"
   },
-  "author": "",
+  "keywords": [
+    "node"
+  ],
+  "author": "developer manish",
   "license": "ISC",
   "dependencies": {
-    "chai": "^5.2.0",
-    "mongodb": "^6.17.0"
+    "dotenv": "^17.0.1",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mongodb": "^6.5.0",
+    "morgan": "^1.10.0"
   }
 }
