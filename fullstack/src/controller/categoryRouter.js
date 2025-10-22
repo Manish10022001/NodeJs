@@ -5,7 +5,7 @@ let mongodb = require('mongodb').MongoClient;
 //let url = "mongodb://localhost:27017"; //or store it in env file and get it from there
 let url = process.env.MONGO_URL;
 //m2- remove category data to get it from mongodb
-
+//just kept categoryRouter in function
 function router(menu) {
     categoryRouter.route('/')
         .get((req, res) => {

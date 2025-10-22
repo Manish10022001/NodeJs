@@ -4,8 +4,8 @@
   "description": "This is node with ejs",
   "main": "index.js",
   "scripts": {
-    "start": "node App_bk3.js",
-    "dev": "nodemon App_bk3.js"
+    "start": "node App_bk.js",
+    "dev": "nodemon App_bk.js"
   },
   "keywords": [
     "node"
