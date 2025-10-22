@@ -1,0 +1,17 @@
+{
+  "name": "weatherapi",
+  "version": "1.0.0",
+  "description": "this is a weatherapi app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node App.js",
+    "dev": "nodemon App.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "request": "^2.88.2"
+  }
+}
