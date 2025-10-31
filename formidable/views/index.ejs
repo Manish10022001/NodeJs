@@ -1,0 +1,15 @@
+<form action="/profile" method="post" enctype="multipart/form-data">
+  <!-- whenever dealing with images or multipart kind of data we use enctype(encryption type) -->
+
+  <div>
+    <label>Name</label>
+    <input type="text" name="imgName" />
+  </div>
+  <div>
+    <label>File</label>
+    <input type="file" name="fileName" />
+  </div>
+  <button type="submit">Submit</button>
+</form>
+<br />
+<a href="/viewall">View All Uploaded Images</a>
