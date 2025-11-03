@@ -17,7 +17,11 @@ app.use(cors());
 
 let authKey = process.env.AuthKey;
 
-let { getData, getDataWithSort, getDataWithSortWithLimit } = require("./controller/apiController");
+let {
+  getData,
+  getDataWithSort,
+  getDataWithSortWithLimit,
+} = require("./controller/apiController");
 
 function auth(key) {
   if (key == authKey) {
@@ -135,10 +139,35 @@ app.get("/filter/:mealId", async (req, res) => {
   // const output = await getData(db, collection, query);
 
   // const output = await getDataWithSort(db, collection, query, sort);
-  const output = await getDataWithSortWithLimit(db, collection, query, sort, skip, limit);
+  const output = await getDataWithSortWithLimit(
+    db,
+    collection,
+    query,
+    sort,
+    skip,
+    limit
+  );
   res.send(output);
 });
 
+//p-3
+//Details of the restaurants: there are 2 ways to get it
+//first by using restaurant_id directly and second by using mongo.ObjectId
+app.get("/details/:id", async (req, res) => {
+  //1 st
+  // let id = Number(req.params.id);
+  // let query = {
+  //   restaurant_id: id,
+  // };
+
+  //2nd
+  let _id = new mongo.ObjectId(req.params.id);
+  let query = { _id: _id };
+
+  let collection = "restaurants";
+  const output = await getData(db, collection, query);
+  res.send(output);
+});
 async function connectDb() {
   const client = new MongoClient(mongoUrl);
   await client.connect();
