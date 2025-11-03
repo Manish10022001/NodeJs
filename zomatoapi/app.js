@@ -168,6 +168,30 @@ app.get("/details/:id", async (req, res) => {
   const output = await getData(db, collection, query);
   res.send(output);
 });
+
+//p-3.2: get menu wrt to restaurants
+app.get("/menu/:id", async (req, res) => {
+  let id = Number(req.params.id);
+  let query = { restaurant_id: id };
+  let collection = "menu";
+
+  const output = await getData(db, collection, query);
+  res.send(output);
+});
+
+//p-5.1: iew All order/with or without email
+app.get("/orders", async (req, res) => {
+  let query = {};
+  //now if want order with email then give condition
+  if (req.query.email) {
+    query = {
+      email: req.query.email
+    };
+  }
+  let collection = "orders";
+  const output = await getData(db, collection, query);
+  res.send(output);
+});
 async function connectDb() {
   const client = new MongoClient(mongoUrl);
   await client.connect();
