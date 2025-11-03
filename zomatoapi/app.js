@@ -17,6 +17,8 @@ app.use(cors());
 
 let authKey = process.env.AuthKey;
 
+let { getData, getDataWithSort, getDataWithSortWithLimit } = require("./controller/apiController");
+
 function auth(key) {
   if (key == authKey) {
     return true;
@@ -24,6 +26,11 @@ function auth(key) {
     return false;
   }
 }
+
+//p-1.4.2
+// async function getData(colName, query) {
+//   return db.collection(colName).find(query).toArray();
+// } this is commong data so we put it in separate file apicontroller  and import it or requreit it wherever necessary
 
 //get heart beat : to check if api calls are working properly
 app.get("/", (req, res) => {
@@ -58,11 +65,78 @@ app.get("/restaurant", async (req, res) => {
   res.status(200).send(data);
 });
 
+//p-1.4.1
 app.get("/meals", async (req, res) => {
-  // let query = {};
+  let query = {};
+  let collection = "mealType";
+  const output = await getData(db, collection, query); //also pass db as parameter ad it is not defined in controller
 
-  const data = await db.collection("mealType").find({}).toArray();
-  res.status(200).send(data);
+  res.status(200).send(output);
+});
+
+//p-1 // FIltering
+app.get("/filter/:mealId", async (req, res) => {
+  let query = {};
+  let collection = "restaurants";
+
+  //p-2.4.2
+  let sort = { cost: 1 }; //true ->ascending it is now defauilt
+
+  //p-2.5.2
+  let skip = 0;
+  let limit = 1000000;
+
+  //p-1.2.1 fitler basis on mealType and cuisine id
+  let mealId = Number(req.params.mealId);
+  let cuisineId = Number(req.query.cuisineId);
+  //p-1.3.1 filter basis of price ie from min cost to max cost
+  let hcost = Number(req.query.hcost);
+  let lcost = Number(req.query.lcost);
+
+  //p-2.5.3 if skip and limit not given in query then default but if given then select that
+  if (req.query.skip && req.query.limit) {
+    skip = Number(req.query.skip);
+    limit = Number(req.query.limit);
+  }
+  //p-2.4.3 if in query sort is giving then choose that
+  if (req.query.sort) {
+    sort = { cost: req.query.sort };
+  }
+
+  if (cuisineId && hcost && lcost) {
+    //-02.3.3
+    query = {
+      "mealTypes.mealtype_id": mealId,
+      $and: [{ cost: { $gt: lcost, $lt: hcost } }],
+      "cuisines.cuisine_id": cuisineId,
+    };
+  }
+  //p-2.3.2
+  else if (hcost && lcost) {
+    query = {
+      "mealTypes.mealtype_id": mealId,
+      //we use $and mongo db condigion that returns all condition that are ture
+      $and: [{ cost: { $gt: lcost, $lt: hcost } }],
+    };
+  }
+  //p-1.2.2
+  else if (cuisineId) {
+    query = {
+      "mealTypes.mealtype_id": mealId,
+      "cuisines.cuisine_id": cuisineId,
+    };
+  }
+
+  //p-2.4.1 : sorting on basis of price, we already have sort method so we just declare sort variable and initialize cost =1 (i.e true. sort in ascending of cost) for true or false and make new function in controller
+  //to get data with sort
+
+  //p-2.5.1: pagination requires sorting, skip and limit and all thre methed already there so just declare the variables for it skip =0 so nohing skipsna and set defaut limit and
+  //creat new function to get data withpaginatio
+  // const output = await getData(db, collection, query);
+
+  // const output = await getDataWithSort(db, collection, query, sort);
+  const output = await getDataWithSortWithLimit(db, collection, query, sort, skip, limit);
+  res.send(output);
 });
 
 async function connectDb() {
