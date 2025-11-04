@@ -29,10 +29,16 @@ async function updateData(db, colName, condition, data) {
   return await db.collection(colName).updateMany(condition, data); //update(condition, projection)
 }
 
+//delete : db.collection.remove(condition);
+async function deleteData(db, colName, data) {
+  return await db.collection(colName).deleteMany(data);
+}
+
 module.exports = {
   getData,
   postData,
   updateData,
+  deleteData,
   getDataWithSort,
   getDataWithSortWithLimit,
 }; //use {} because we want to export multiple methods
