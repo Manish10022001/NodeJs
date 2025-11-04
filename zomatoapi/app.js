@@ -17,7 +17,13 @@ app.use(cors());
 
 let authKey = process.env.AuthKey;
 
-let { getData, getDataWithSort, getDataWithSortWithLimit } = require("./controller/apiController");
+let {
+  getData,
+  getDataWithSort,
+  getDataWithSortWithLimit,
+  postData,
+  updateData,
+} = require("./controller/apiController");
 
 function auth(key) {
   if (key == authKey) {
@@ -135,8 +141,97 @@ app.get("/filter/:mealId", async (req, res) => {
   // const output = await getData(db, collection, query);
 
   // const output = await getDataWithSort(db, collection, query, sort);
-  const output = await getDataWithSortWithLimit(db, collection, query, sort, skip, limit);
+  const output = await getDataWithSortWithLimit(
+    db,
+    collection,
+    query,
+    sort,
+    skip,
+    limit
+  );
   res.send(output);
+});
+
+//p-3
+//Details of the restaurants: there are 2 ways to get it
+//first by using restaurant_id directly and second by using mongo.ObjectId
+app.get("/details/:id", async (req, res) => {
+  //1 st
+  // let id = Number(req.params.id);
+  // let query = {
+  //   restaurant_id: id,
+  // };
+
+  //2nd
+  let _id = new mongo.ObjectId(req.params.id);
+  let query = { _id: _id };
+
+  let collection = "restaurants";
+  const output = await getData(db, collection, query);
+  res.send(output);
+});
+
+//p-3.2: get menu wrt to restaurants
+app.get("/menu/:id", async (req, res) => {
+  let id = Number(req.params.id);
+  let query = { restaurant_id: id };
+  let collection = "menu";
+
+  const output = await getData(db, collection, query);
+  res.send(output);
+});
+
+//p-5.1: iew All order/with or without email
+app.get("/orders", async (req, res) => {
+  let query = {};
+  //now if want order with email then give condition
+  if (req.query.email) {
+    query = {
+      email: req.query.email,
+    };
+  }
+  let collection = "orders";
+  const output = await getData(db, collection, query);
+  res.send(output);
+});
+
+//p-4.2 Place Order
+app.post("/placeOrder", async (req, res) => {
+  let data = req.body; // we need to give
+  let collection = "orders";
+  let response = await postData(db, collection, data);
+  res.send(response);
+});
+
+//p-4.1 Details of selected menu:
+//-> using post call even though me want to get data because we need body from user
+//we want id in form of array , if it is in array then we get data else not
+// {"id":[2,4,6]}
+app.post("/menuDetails", async (req, res) => {
+  //condition to check if ids are array or not
+  if (Array.isArray(req.body.id)) {
+    let query = { menu_id: { $in: req.body.id } }; //using $in to find multiple data
+    let collection = "menu";
+    //call getData to get details
+    let output = await getData(db, collection, query);
+    res.send(output);
+  } else {
+    res.send(`Please pass data as array like {"id":[2,4,6]}`);
+  }
+});
+
+//P-5.2.1: Update order details : For this we need to create generic function in controller
+app.put("/updateOrder", async (req, res) => {
+  let collection = "orders";
+  //update based on mongo object
+  let condition = { _id: req.body._id }; //if id given
+  let data = {
+    $set: {
+      status: req.body.status,
+    },
+  };
+  let response = await updateData(db, collection, condition, data);
+  res.send(response);
 });
 
 async function connectDb() {
@@ -148,6 +243,7 @@ async function connectDb() {
     console.log("running on port " + port);
   });
 }
+
 connectDb();
 // mongoClient.connect(mongoUrl,(err,client)=>{
 //     if(err) console.log("Error while connecting mongo")
