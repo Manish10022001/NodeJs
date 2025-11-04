@@ -38,7 +38,17 @@
 //Page 4
 
 - Details of the selected Menu
-- Place Order
+  > (POST) http://localhost:9000/menuDetails
+  {"id":[2,4]}
+- Place Order (postman: body -> raw -> json)
+  > (POST) http://localhost:9000/placeOrder
+  {
+      "orderId":5,
+      "name":"ajinkya",
+      "email":"ajinkya@gmail.com",
+      "address": "Hno 43. Sector 2",
+      "phone": 3434343434434
+  }
 
 //Page 5
 
@@ -46,4 +56,9 @@
   > http://localhost:9000/orders without email
   > http://localhost:9000/orders?email=aakash@gmail.com with email
 - Update order details
+  > (PUT) http://localhost:9000/updateOrder
+  {
+      "_id":"62514d42f5aec503b2e0f2a9",
+      "status":"Delivered"
+  }
 - Delete order

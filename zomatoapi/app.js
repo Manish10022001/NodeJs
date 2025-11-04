@@ -21,6 +21,8 @@ let {
   getData,
   getDataWithSort,
   getDataWithSortWithLimit,
+  postData,
+  updateData,
 } = require("./controller/apiController");
 
 function auth(key) {
@@ -185,13 +187,53 @@ app.get("/orders", async (req, res) => {
   //now if want order with email then give condition
   if (req.query.email) {
     query = {
-      email: req.query.email
+      email: req.query.email,
     };
   }
   let collection = "orders";
   const output = await getData(db, collection, query);
   res.send(output);
 });
+
+//p-4.2 Place Order
+app.post("/placeOrder", async (req, res) => {
+  let data = req.body; // we need to give
+  let collection = "orders";
+  let response = await postData(db, collection, data);
+  res.send(response);
+});
+
+//p-4.1 Details of selected menu:
+//-> using post call even though me want to get data because we need body from user
+//we want id in form of array , if it is in array then we get data else not
+// {"id":[2,4,6]}
+app.post("/menuDetails", async (req, res) => {
+  //condition to check if ids are array or not
+  if (Array.isArray(req.body.id)) {
+    let query = { menu_id: { $in: req.body.id } }; //using $in to find multiple data
+    let collection = "menu";
+    //call getData to get details
+    let output = await getData(db, collection, query);
+    res.send(output);
+  } else {
+    res.send(`Please pass data as array like {"id":[2,4,6]}`);
+  }
+});
+
+//P-5.2.1: Update order details : For this we need to create generic function in controller
+app.put("/updateOrder", async (req, res) => {
+  let collection = "orders";
+  //update based on mongo object
+  let condition = { _id: req.body._id }; //if id given
+  let data = {
+    $set: {
+      status: req.body.status,
+    },
+  };
+  let response = await updateData(db, collection, condition, data);
+  res.send(response);
+});
+
 async function connectDb() {
   const client = new MongoClient(mongoUrl);
   await client.connect();
@@ -201,6 +243,7 @@ async function connectDb() {
     console.log("running on port " + port);
   });
 }
+
 connectDb();
 // mongoClient.connect(mongoUrl,(err,client)=>{
 //     if(err) console.log("Error while connecting mongo")
