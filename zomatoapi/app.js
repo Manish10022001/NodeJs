@@ -4,7 +4,7 @@ const { MongoClient } = require("mongodb");
 let dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
+const { ObjectId } = require("mongodb"); //import this as new mongo.ObjectId is deprecated from v5
 dotenv.config();
 const app = express();
 const mongoUrl = process.env.mongoUrl;
@@ -23,6 +23,7 @@ let {
   getDataWithSortWithLimit,
   postData,
   updateData,
+  deleteData,
 } = require("./controller/apiController");
 
 function auth(key) {
@@ -232,6 +233,22 @@ app.put("/updateOrder", async (req, res) => {
   };
   let response = await updateData(db, collection, condition, data);
   res.send(response);
+});
+
+//p-5-3: Delete order : again create generic ffunction in controller
+app.delete("/deleteOrder", async (req, res) => {
+  let collection = "orders";
+  //id from mongodb oject
+  // let query = { _id: new mongo.ObjectId(req.body._id) };
+  let query = { _id: req.body._id };
+  //now need condtion to see data
+  let rowCount = await getData(db, collection, query);
+  if (rowCount.length > 0) {
+    let response = await deleteData(db, collection, query);
+    res.send(response);
+  } else {
+    res.send("No Order Found");
+  }
 });
 
 async function connectDb() {
