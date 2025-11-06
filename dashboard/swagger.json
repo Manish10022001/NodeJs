@@ -1,0 +1,160 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "this is api for users",
+    "version": "__version__"
+  },
+  "tags": [{ "name": "PUBLIC ROUTE", "description": "Public Route" }],
+  "paths": {
+    "/health": {
+      "summary": "Testing Health Check",
+      "get": {
+        "description": "Testing Health Check for app",
+        "tags": ["PUBLIC ROUTE"],
+        "responses": {
+          "200": {
+            "description": "Health Check Pass"
+          }
+        }
+      }
+    },
+    "/users": {
+      "summary": "Testing Health Check",
+      "get": {
+        "description": "Testing Health Check for app",
+        "tags": ["PUBLIC ROUTE"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "role",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Enter City"
+          },
+          {
+            "in": "query",
+            "name": "city",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Enter City"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Health Check Pass"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "summary": "Testing Health Check",
+      "get": {
+        "description": "Testing Health Check for app",
+        "tags": ["PUBLIC ROUTE"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Enter Object Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Health Check Pass"
+          }
+        }
+      }
+    },
+    "/addUser": {
+      "summary": "Testing Health Check",
+      "post": {
+        "description": "Testing Health Check for app",
+        "tags": ["PUBLIC ROUTE"],
+        "requestBody": {
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "id": "string"
+              },
+              "example": {
+                "name": "Keerti",
+                "city": "Amsterdam",
+                "phone": 989878672,
+                "role": "Admin",
+                "isActive": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Health Check Pass"
+          }
+        }
+      }
+    },
+    "/updateUser": {
+      "summary": "Update User",
+      "put": {
+        "description": "Testing update users for the app",
+        "tags": ["PUBLIC ROUTE"],
+        "requestBody": {
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "id": "string"
+              },
+              "example": {
+                "_id": "",
+                "name": "Keerti",
+                "city": "Amsterdam",
+                "phone": 989878672,
+                "role": "Admin",
+                "isActive": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Health Check Pass"
+          }
+        }
+      }
+    },
+    "/deleteUser": {
+      "summary": "Update User",
+      "delete": {
+        "description": "Testing update users for the app",
+        "tags": ["PUBLIC ROUTE"],
+        "requestBody": {
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "id": "string"
+              },
+              "example": {
+                "_id": ""
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Health Check Pass"
+          }
+        }
+      }
+    }
+  }
+}

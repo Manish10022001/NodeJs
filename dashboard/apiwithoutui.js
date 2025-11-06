@@ -20,6 +20,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
+//Swagger
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
+const package = require("./package.json");
+
+//pick swagger document version from package.version
+swaggerDocument.info.version = package.version;
+app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 //Health Check
 app.get("/health", (req, res) => {
   res.send("Health Ok");
@@ -74,6 +82,24 @@ app.get("/users/:id", async (req, res) => {
   res.send(output);
 });
 
+//update user
+app.put("/updateUser", async (req, res) => {
+  await collection.updateOne(
+    {
+      _id: new Mongo.ObjectId(req.body._id),
+    },
+    {
+      $set: {
+        name: req.body.name,
+        city: req.body.city,
+        phone: req.body.phone,
+        role: req.body.role,
+        isActive: true,
+      },
+    }
+  );
+  res.send("Record updated");
+});
 //hard delete : it totally removed data from db
 app.delete("/deleteUser", async (req, res) => {
   await collection.deleteOne({
