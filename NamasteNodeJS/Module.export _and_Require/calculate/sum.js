@@ -16,3 +16,8 @@ module.exports = {
   x,
   calculateSum,
 };
+
+console.log(module.exports); //{}
+//module.exports is an empty object so we can also use it as
+// module.exports.calculateSum = calculateSum;
+// module.exports.x = x;
